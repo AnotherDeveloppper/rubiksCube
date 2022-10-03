@@ -14,8 +14,9 @@
 
 from genericpath import exists
 from operator import concat
+from os import remove
 from turtle import color
-
+from numpy import * 
 
 # colors of rubik cube : ( to be changed)
 colors = ["White","Blue","Red","Yellow","Green","Orange","White","Blue","Red","Yellow","Green","Orange","White","Blue","Red","Yellow","Green","Orange","White","Blue","Red","Yellow","Green","Orange",]
@@ -40,23 +41,34 @@ class piece :
     def toString(self):
         print(self.name+" with position: "+ str(self.pos)+" and color: "+' '.join(self.color))
     
+    def toString2(self):
+        print(' '.join(self.color))
 
- # needed variables for loop
+def remove_values_from_list(the_list, val):
+    return [value for value in the_list if value != val]
+
+# needed variables for loop
 y=0 #current face color
 facecounter=0   #2 colors pieces counter for each face
 facecounter2=0  #3 colors pieces counter for each face
 temp=0 # additional value on color to avoid adding 2 opposite face colors together
 pieces = [] # list of all our pieces
 colorTemp=[]    # temporary colors of each piece
-
+threeColorsTemp = []
+threeColors = []
 # init all pieces 
 
 
 # 1 color piece takes current color ( using variable y)
-# 2 colors piece takes current color + 1  of the rest 4 colors that can match ( ex : white with all except yellow)
-# 2 colors piece takes current color + 2  of the rest 4 colors that can match ( ex : white with all except yellow)
 
-for x in range (0,54) : 
+# might change : 
+# 2 colors piece takes current color + 1  of the rest 4 colors that can match ( ex : white with all except yellow)
+# 3 colors piece takes current color + 2  of the rest 4 colors that can match ( ex : white with all except yellow)
+
+
+# change to add : store current color and opposite color in variable at start and make list without them then use loop to add pieces
+
+for x in range (0,55) : 
     
 
     if x==4 or (x-4)%9==0:
@@ -76,26 +88,27 @@ for x in range (0,54) :
         temp =0
     if x== 0 or x==2 or x==6 or x==8 or x%9==0 or (x-2)%9==0 or (x-6)%9==0 or (x-8)%9==0:
         # 3 colors
+        threeColors = colors.copy()
+        threeColorsTemp = colors.copy()
         facecounter2+=1
-        if facecounter2>=2 :
-            temp = facecounter2 +1
-            colorTemp.append(colors[y])
-            colorTemp.append(colors[y+temp])
-            if temp+2 ==6 :
-                colorTemp.append(colors[y+temp+2+1])
-            else:
-                colorTemp.append(colors[y+temp+2])
-        else : 
-            colorTemp.append(colors[y])
-            colorTemp.append(colors[y+1])
-            colorTemp.append(colors[y+2])
-        temp =0
+        temp = facecounter+1
+        print(threeColors[y+3])
+        threeColors = remove_values_from_list(threeColors,threeColors[y+3])
+        print(facecounter2)
+        threeColors = remove_values_from_list(threeColors,threeColors[y])
+        threeColorsTemp = remove_values_from_list(threeColorsTemp,threeColorsTemp[y+2])
+        """
+        colorTemp.append(threeColorsTemp[y])
+        colorTemp.append(threeColors[y+facecounter2+1])
+        colorTemp.append(threeColors[y+facecounter2+2])
+        """
+
     
     if x%9==0 and x!=0:
         y+=1
         facecounter=0
         facecounter2=0
-    colorTemp.sort()
+    #colorTemp.sort() #we sort all colors stored so we can compare them later to pre existing piece's colors
     
     name = 'piece_{}'.format(x) 
     exists = False
@@ -109,22 +122,23 @@ for x in range (0,54) :
     colorTemp=[]
     exists= False
 
-
+"""
 # show all pieces
 for x in pieces: 
-    x.toString()
-
-"""
-
-for x in pieces: 
-    x.toString()
+    x.toString2()
 
 
-        if facecounter2>=2 :
+        if threeColorsTemp[y] == threeColors[y+facecounter2+1] : 
+            colorTemp.append(threeColors[y+facecounter2+2])
+        else : 
+
+    
+    
+            if facecounter2>=2 :
             temp = facecounter2 +1
             colorTemp.append(colors[y])
             colorTemp.append(colors[y+temp])
-            if temp+2 ==6  or temp+2 == 12:
+            if temp+2 ==6 :
                 colorTemp.append(colors[y+temp+2+1])
             else:
                 colorTemp.append(colors[y+temp+2])
@@ -132,4 +146,5 @@ for x in pieces:
             colorTemp.append(colors[y])
             colorTemp.append(colors[y+1])
             colorTemp.append(colors[y+2])
+        temp =0
 """
