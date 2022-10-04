@@ -56,59 +56,54 @@ pieces = [] # list of all our pieces
 colorTemp=[]    # temporary colors of each piece
 threeColorsTemp = []
 threeColors = []
+baseColor = "" # color of the face in each loop
+oppositeColor = "" # the opposite of the color in each loop
 # init all pieces 
 
 
-# 1 color piece takes current color ( using variable y)
+# 1 color piece takes current color ( using variable baseColor)
 
-# might change : 
 # 2 colors piece takes current color + 1  of the rest 4 colors that can match ( ex : white with all except yellow)
 # 3 colors piece takes current color + 2  of the rest 4 colors that can match ( ex : white with all except yellow)
 
 
-# change to add : store current color and opposite color in variable at start and make list without them then use loop to add pieces
 
 for x in range (0,55) : 
-    
+    baseColor =  colors[y]
+    oppositeColor = colors[y+3]
 
     if x==4 or (x-4)%9==0:
         # 1 color
-        colorTemp.append(colors[y])
+        colorTemp.append(baseColor)
 
     if x== 1 or x==3 or x==5 or x==7 or (x-1)%9==0 or (x-3)%9==0 or (x-5)%9==0 or (x-7)%9==0:
         # 2 colors
         facecounter+=1
         if facecounter>= 3 :
             temp = facecounter+1
-            colorTemp.append(colors[y])
+            colorTemp.append(baseColor)
             colorTemp.append(colors[y+temp])
         else : 
-            colorTemp.append(colors[y])
+            colorTemp.append(baseColor)
             colorTemp.append(colors[y+facecounter])
         temp =0
     if x== 0 or x==2 or x==6 or x==8 or x%9==0 or (x-2)%9==0 or (x-6)%9==0 or (x-8)%9==0:
         # 3 colors
         threeColors = colors.copy()
         threeColorsTemp = colors.copy()
+        threeColors = remove_values_from_list(threeColors,baseColor)
+        threeColors = remove_values_from_list(threeColors,oppositeColor)
+        colorTemp.append(baseColor)
+        colorTemp.append(threeColors[0+facecounter2])
+        colorTemp.append(threeColors[1+facecounter2])
         facecounter2+=1
-        temp = facecounter+1
-        print(threeColors[y+3])
-        threeColors = remove_values_from_list(threeColors,threeColors[y+3])
-        print(facecounter2)
-        threeColors = remove_values_from_list(threeColors,threeColors[y])
-        threeColorsTemp = remove_values_from_list(threeColorsTemp,threeColorsTemp[y+2])
-        """
-        colorTemp.append(threeColorsTemp[y])
-        colorTemp.append(threeColors[y+facecounter2+1])
-        colorTemp.append(threeColors[y+facecounter2+2])
-        """
 
     
     if x%9==0 and x!=0:
         y+=1
         facecounter=0
         facecounter2=0
-    #colorTemp.sort() #we sort all colors stored so we can compare them later to pre existing piece's colors
+    colorTemp.sort() #we sort all colors stored so we can compare them later to pre existing piece's colors
     
     name = 'piece_{}'.format(x) 
     exists = False
@@ -122,29 +117,8 @@ for x in range (0,55) :
     colorTemp=[]
     exists= False
 
-"""
+
+
 # show all pieces
 for x in pieces: 
-    x.toString2()
-
-
-        if threeColorsTemp[y] == threeColors[y+facecounter2+1] : 
-            colorTemp.append(threeColors[y+facecounter2+2])
-        else : 
-
-    
-    
-            if facecounter2>=2 :
-            temp = facecounter2 +1
-            colorTemp.append(colors[y])
-            colorTemp.append(colors[y+temp])
-            if temp+2 ==6 :
-                colorTemp.append(colors[y+temp+2+1])
-            else:
-                colorTemp.append(colors[y+temp+2])
-        else : 
-            colorTemp.append(colors[y])
-            colorTemp.append(colors[y+1])
-            colorTemp.append(colors[y+2])
-        temp =0
-"""
+    x.toString()
