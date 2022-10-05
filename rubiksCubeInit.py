@@ -1,15 +1,3 @@
-"""
-            UUU                                 0  1  2                                                     O O O
-            UUU                                 3  4  5                                                     O O O
-            UUU                                 6  7  8                                                     O O O
-        LLL FFF RRR BBB               9  10 11  18 19 20    27 28 29    36 37 38                   G G G    W W W    B B B   Y Y Y
-        LLL FFF RRR BBB               12 13 14  21 22 23    30 31 32    39 40 41                   G G G    W W W    B B B   Y Y Y
-        LLL FFF RRR BBB               15 16 17  24 25 26    33 34 35    42 43 44                   G G G    W W W    B B B   Y Y Y
-            DDD                                 45 46 47                                                    R R R
-            DDD                                 48 49 50                                                    R R R
-            DDD                                 51 52 53                                                    R R R
-"""
-
 
 
 from genericpath import exists
@@ -58,6 +46,7 @@ threeColorsTemp = []
 threeColors = []
 baseColor = "" # color of the face in each loop
 oppositeColor = "" # the opposite of the color in each loop
+pieceCount = 1
 # init all pieces 
 
 
@@ -105,14 +94,15 @@ for x in range (0,55) :
         facecounter2=0
     colorTemp.sort() #we sort all colors stored so we can compare them later to pre existing piece's colors
     
-    name = 'piece_{}'.format(x) 
+    name = 'piece_{}'.format(pieceCount) 
     exists = False
     for onePiece in pieces :
         if onePiece.color == colorTemp : 
             exists = True
 
     if exists == False :
-        pieces.append(piece(name,x,colorTemp))
+        pieces.append(piece(name,pieceCount,colorTemp))
+        pieceCount+=1
 
     colorTemp=[]
     exists= False
@@ -120,5 +110,4 @@ for x in range (0,55) :
 
 
 # show all pieces
-for x in pieces: 
-    x.toString()
+print(" ---- pieces loaded ----")
